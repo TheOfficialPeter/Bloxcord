@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+  "version": "1.0",
+  "name": "Test",
+  "content_scripts": [
+    {
+      "matches": ["https://discord.com/*"],
+      "js": ["main.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["https://www.roblox.com/*"],
+      "js": ["robloxJoin.js"]
+    }
+  ],
+  "web_accessible_resources": ["robloxJoinCommand.js", "robloxPresence.js"]
+}
