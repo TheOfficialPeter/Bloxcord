@@ -1,4 +1,3 @@
-
 window.onload = function () {
   try {
     const observer = new MutationObserver(function (mutations_list) {
