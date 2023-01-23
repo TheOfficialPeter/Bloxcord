@@ -23,7 +23,9 @@ window.onload = function () {
 
             joinBtn.onclick = function() {
               // provide the placeid and jobid here 
-              window.location.href = "https://www.roblox.com/home?placeid=0&jobid=0";
+              var placeid = "";
+              var jobid = "";
+              window.open("https://www.roblox.com/home?placeid="+placeid+"&jobid="+jobid, "_blank");
             }
           }
         });

@@ -13,5 +13,5 @@
       "js": ["robloxJoin.js"]
     }
   ],
-  "web_accessible_resources": ["robloxJoinCommand.js", "robloxPresence.js"]
+  "web_accessible_resources": ["robloxJoinCommand.js"]
 }

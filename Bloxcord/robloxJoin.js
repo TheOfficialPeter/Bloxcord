@@ -8,11 +8,21 @@ window.onload = function () {
     var jobId = params.jobid;
 
     if (placeId != null || jobId != null) {
-      window.location.href =
-        "https://www.roblox.com/games/start?placeid=" +
-        placeId +
-        "&gameInstanceId=" +
-        jobId;
+      var placeIdElement = document.createElement("div");
+      placeIdElement.id = "placeId";
+      placeIdElement.className = placeId;
+
+      var jobIdElement = document.createElement("div");
+      jobIdElement.id = "jobId";
+      jobIdElement.className = jobId;
+
+      document.body.appendChild(placeIdElement);
+      document.body.appendChild(jobIdElement);
+
+      var injectedCode = document.createElement("script");
+      injectedCode.src = chrome.runtime.getURL("robloxJoinCommand.js");
+
+      document.body.appendChild(injectedCode);
     }
   } catch (err) {}
 
@@ -22,11 +32,14 @@ window.onload = function () {
   const observer = new MutationObserver(function (mutations_list) {
     mutations_list.forEach(function (mutation) {
       mutation.addedNodes.forEach(function (added_node) {
-        if (added_node.className == "btn-full-width btn-common-play-game-lg btn-primary-md btn-min-width") {
+        if (
+          added_node.className ==
+          "btn-full-width btn-common-play-game-lg btn-primary-md btn-min-width"
+        ) {
           playBtn = added_node;
 
           if (playBtn !== null) {
-            console.log("FOUND BUTTON");
+            //console.log("FOUND BUTTON");
 
             observer.disconnect();
 
@@ -34,13 +47,13 @@ window.onload = function () {
             playBtn.parentNode.replaceChild(clonePlayBtn, playBtn);
 
             clonePlayBtn.onclick = function () {
-              console.log("CLICKED PLAY BUTTON");
+              //console.log("CLICKED PLAY BUTTON");
               // grab server with lowest ping
               var xhttp = new XMLHttpRequest();
 
               xhttp.onreadystatechange = function () {
                 if (this.status == 200) {
-                  console.log(JSON.parse(xhttp.responseText));
+                  //console.log(JSON.parse(xhttp.responseText));
 
                   // join server with lowest ping
                   var lowestPing = 1000;
@@ -54,14 +67,33 @@ window.onload = function () {
                   }
 
                   var servers = JSON.parse(xhttp.responseText).data;
-                  servers.forEach(getLowestPing)
+                  servers.forEach(getLowestPing);
 
-                  // record job id
-                  console.log(lowestServer)
+                  // join lowest server
+                  var placeId = window.location.pathname.split("/")[2];
+
+                  var placeIdElement = document.createElement("div");
+                  placeIdElement.id = "placeId";
+                  placeIdElement.className = placeId;
+
+                  var jobIdElement = document.createElement("div");
+                  jobIdElement.id = "jobId";
+                  jobIdElement.className = lowestServer;
+
+                  document.body.appendChild(placeIdElement);
+                  document.body.appendChild(jobIdElement);
+
+                  var injectedCode = document.createElement("script");
+                  injectedCode.src = chrome.runtime.getURL(
+                    "robloxJoinCommand.js"
+                  );
+
+                  document.body.appendChild(injectedCode);
+                  //console.log(lowestServer)
                 }
               };
 
-              var placeId = "17541196";
+              var placeId = window.location.pathname.split("/")[2];
 
               xhttp.open(
                 "GET",
@@ -81,8 +113,11 @@ window.onload = function () {
     });
   });
 
-  observer.observe(document.getElementById("game-details-play-button-container"), {
-    subtree: false,
-    childList: true,
-  });
+  observer.observe(
+    document.getElementById("game-details-play-button-container"),
+    {
+      subtree: false,
+      childList: true,
+    }
+  );
 };
