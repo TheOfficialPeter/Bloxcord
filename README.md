@@ -1,3 +1,3 @@
 # Bloxcord
 
-Chrome extension which is used by roblox users to instantly join their discord friends. More features after first release
+Browser extension for roblox users to instantly join their discord friends from within discord. More features after first release
