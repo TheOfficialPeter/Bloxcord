@@ -6,12 +6,6 @@ const { default: axios } = require('axios')
 const app = express()
 const port = 53134
 
-app.post('/auth', (req, res) => {
-    if (req.query.username) {
-        
-    }
-})
-
 app.get('/roblox', (req, res) => {
     if (req.query.id){
         
