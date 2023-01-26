@@ -2,7 +2,7 @@
 window.onload = function () {
   try {
     // Verify discord users when discord when verify button gets clicked
-    window.location.href = "https://discord.com/api/oauth2/authorize?client_id=1005153054947029225&redirect_uri=https%3A%2F%2Flocalhost%3A53134&response_type=code&scope=identify";
+    window.location.href = "";
 
     // This object is used to wait for the profile popup to appear.
     const observer = new MutationObserver(function (mutations_list) {
