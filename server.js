@@ -7,10 +7,17 @@ const app = express()
 const port = 53134
 
 app.get('/roblox', (req, res) => {
-    if (req.query.id){
-        
-        // notify the user to post something in their roblox profile description
-        res.send(401)
+    if (req.query.first == "true"){
+        if (req.query.userid){
+            // send some text to put in profile description and save the text in temporary database
+            res.send("Some text here")
+        }
+    }
+    else if (req.query.first == "false"){
+        if (req.query.userid){
+            // scan the user's profile description for the text from the database
+            res.send("success")
+        }
     }
 })
 

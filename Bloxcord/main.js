@@ -1,29 +1,34 @@
 // Wait for discord to load
 window.onload = function () {
   try {
-    // Verify discord users when discord when verify button gets clicked
-    window.location.href = "";
+    // check if you want to visit discord or use it for verification
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+      get: (searchParams, prop) => searchParams.get(prop),
+    });
+
+    if (params.verify) {
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.runtime.sendMessage(tabs[0], { verify: "true" }, function (response) {
+          if (response.discordToken) {
+            window.location.href = "https://www.roblox.com/home?code=" + response.discordToken;
+          }
+        });
+      });
+    }
 
     // This object is used to wait for the profile popup to appear.
     const observer = new MutationObserver(function (mutations_list) {
       mutations_list.forEach(function (mutation) {
         mutation.addedNodes.forEach(function (added_node) {
           // Check if the popup is the correct one, because there's like ~50 different kinds. I also haven't tested this with light theme.
-          if (added_node.className == "theme-dark layer-2aCOJ3" || added_node.className == "theme-light layer-2aCOJ3") {
-
-            // Check database for user
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "localhost");
-            xhttp.send();
-
-            xhttp.onload = function(){
-              if (xhttp.status == 200){
-                const response = xhttp.responseText;
-              }
-            }
-
+          if (
+            added_node.className == "theme-dark layer-2aCOJ3" ||
+            added_node.className == "theme-light layer-2aCOJ3"
+          ) {
             // The content part inside of the profile popup
-            var popupBody = document.getElementsByClassName("userPopoutOverlayBackground-dKOOda")[0];
+            var popupBody = document.getElementsByClassName(
+              "userPopoutOverlayBackground-dKOOda"
+            )[0];
 
             // Add the Join on Roblox button to the profile popup
             var joinBtn = document.createElement("button");
@@ -42,12 +47,18 @@ window.onload = function () {
             popupBody.appendChild(joinBtn);
 
             // When the button is clicked it will redirect you to the roblox website where it will launch the game using code injection.
-            joinBtn.onclick = function() {
+            joinBtn.onclick = function () {
               // provide the placeid and jobid here. This will be retrieved from the web server
               var placeid = "";
               var jobid = "";
-              window.open("https://www.roblox.com/home?placeid="+placeid+"&jobid="+jobid, "_blank");
-            }
+              window.open(
+                "https://www.roblox.com/home?placeid=" +
+                  placeid +
+                  "&jobid=" +
+                  jobid,
+                "_blank"
+              );
+            };
           }
         });
       });

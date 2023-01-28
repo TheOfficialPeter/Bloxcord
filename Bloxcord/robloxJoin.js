@@ -1,7 +1,3 @@
-function verifyRobloxUser() {
-
-}
-
 // wait for website to complete loading process
 window.onload = function () {
   try {
@@ -9,6 +5,11 @@ window.onload = function () {
     const params = new Proxy(new URLSearchParams(window.location.search), {
       get: (searchParams, prop) => searchParams.get(prop),
     });
+
+    // check for discord token
+    if (params.code){
+      window.localStorage.setItem("discordToken", params.code);
+    }
 
     // Get place id and job id from the url (when being redirected from discord)
     var placeId = params.placeid;
@@ -34,6 +35,8 @@ window.onload = function () {
       injectedCode.src = chrome.runtime.getURL("robloxJoinCommand.js"); // Make sure that this script has permissions in the manifest file. (https://developer.chrome.com/docs/extensions/reference/runtime/)
 
       document.body.appendChild(injectedCode);
+
+      // Add placeid and jobid to discord bio when joining someone
     }
   } catch (err) {}
 
@@ -108,6 +111,29 @@ window.onload = function () {
                   document.body.appendChild(placeIdElement);
                   document.body.appendChild(jobIdElement);
 
+                  // Get discord token
+                  if (window.localStorage.getItem("discordToken") == null){
+                    window.location.href = "https://discord.com/channels/@me?verify=true";
+                  }
+
+                  // Add placeid and jobid to discord
+                  xhttp = new XMLHttpRequest();
+
+                  xhttp.onreadystatechange = () => {
+                    if (xhttp.status == 200) {
+                      console.log("CHANGING STATUS 2");
+                    }
+                    else
+                    {
+                      console.log(xhttp.responseText);
+                    }
+                  }
+
+                  xhttp.open("PATCH", "https://discord.com/api/v9/users/@me/profile");
+                  xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                  xhttp.setRequestHeader("authorization", window.localStorage.getItem("discordToken"));
+                  xhttp.send(JSON.stringify({"bio": "placeid="+placeId+"jobid="+lowestServer}));
+
                   // Inject code into the website that will launch the GameLauncher with the placeId and jobId
                   var injectedCode = document.createElement("script");
                   injectedCode.src = chrome.runtime.getURL(
@@ -115,10 +141,6 @@ window.onload = function () {
                   ); // Make sure you this filename has permissions in the manifest file (https://developer.chrome.com/docs/extensions/reference/runtime/)
 
                   document.body.appendChild(injectedCode);
-                  
-                  // Add user + gameid + jobid + discorduser to the database
-                  xhttp.open("GET", "localtonet/changestatus?user=yes&gameid=yes&jobid=yes");
-                  xhttp.send();
                 }
               };
 
