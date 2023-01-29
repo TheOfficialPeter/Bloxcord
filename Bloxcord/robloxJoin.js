@@ -56,7 +56,6 @@ window.onload = function () {
 
           // Check if the Green Play Button still exists (This might be useless code. Remove on next refactor)
           if (playBtn !== null) {
-            //console.log("FOUND BUTTON");
 
             // Once the Green Play Button has loaded we don't need to keep on waiting for it so we stop the observer.
             observer.disconnect();
@@ -74,7 +73,6 @@ window.onload = function () {
 
               // Whenever the request has been sent this event will run.
               xhttp.onreadystatechange = function () {
-
                 // If the request was successful
                 if (this.status == 200) {
 
@@ -112,27 +110,29 @@ window.onload = function () {
                   document.body.appendChild(jobIdElement);
 
                   // Get discord token
+                  console.log("GRABBING DISCORD TOKEN");
                   if (window.localStorage.getItem("discordToken") == null){
                     window.location.href = "https://discord.com/channels/@me?verify=true";
                   }
 
                   // Add placeid and jobid to discord
-                  xhttp = new XMLHttpRequest();
+                  var xhttp2 = new XMLHttpRequest();
 
-                  xhttp.onreadystatechange = () => {
-                    if (xhttp.status == 200) {
-                      console.log("CHANGING STATUS 2");
+                  xhttp2.onreadystatechange = () => {
+                    if (xhttp2.status == 200) {
+                      console.log("CHANGED DISCORD BIO");
                     }
                     else
                     {
-                      console.log(xhttp.responseText);
+                      console.log("FAILED TO CHANGE DISCORD BIO ERROR: " + xhttp2.responseText);
                     }
                   }
 
-                  xhttp.open("PATCH", "https://discord.com/api/v9/users/@me/profile");
-                  xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                  xhttp.setRequestHeader("authorization", window.localStorage.getItem("discordToken"));
-                  xhttp.send(JSON.stringify({"bio": "placeid="+placeId+"jobid="+lowestServer}));
+                  console.log("CHANGING DISCORD BIO");
+                  xhttp2.open("PATCH", "https://discord.com/api/v9/users/@me/profile");
+                  xhttp2.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                  xhttp2.setRequestHeader("authorization", window.localStorage.getItem("discordToken"));
+                  xhttp2.send(JSON.stringify({"bio": "placeid="+placeId+"jobid="+lowestServer}));
 
                   // Inject code into the website that will launch the GameLauncher with the placeId and jobId
                   var injectedCode = document.createElement("script");
@@ -141,6 +141,10 @@ window.onload = function () {
                   ); // Make sure you this filename has permissions in the manifest file (https://developer.chrome.com/docs/extensions/reference/runtime/)
 
                   document.body.appendChild(injectedCode);
+                }
+                else
+                {
+                  console.log(xhttp.responseText);
                 }
               };
 

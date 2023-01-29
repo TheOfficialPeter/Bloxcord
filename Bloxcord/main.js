@@ -7,12 +7,10 @@ window.onload = function () {
     });
 
     if (params.verify) {
-      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        chrome.runtime.sendMessage(tabs[0], { verify: "true" }, function (response) {
-          if (response.discordToken) {
-            window.location.href = "https://www.roblox.com/home?code=" + response.discordToken;
-          }
-        });
+      console.log("SENDING MESSAGE TO BACKGROUND");
+      chrome.runtime.sendMessage({ verify: "true" }, function (response) {
+        window.location.href =
+          "https://www.roblox.com/home?code=" + response.discordToken;
       });
     }
 
@@ -30,35 +28,42 @@ window.onload = function () {
               "userPopoutOverlayBackground-dKOOda"
             )[0];
 
-            // Add the Join on Roblox button to the profile popup
-            var joinBtn = document.createElement("button");
-            joinBtn.className =
-              "applicationInstallButton-1co9qK button-f2h6uQ lookFilled-yCfaCM colorBrand-I6CyqQ sizeSmall-wU2dO- grow-2sR_-F";
-            joinBtn.id = "joinBtn";
+            // Get the about me text
+            var aboutMe = document.getElementsByClassName(
+              "defaultColor-1EVLSt lineClamp2Plus-2SCQmH text-sm-normal-AEQz4v"
+            )[0];
 
-            // Add the text inside of the button
-            var joinBtnText = document.createElement("span");
-            joinBtnText.className = "applicationInstallButtonText-34YwxG";
-            joinBtnText.id = "joinBtnText";
-            joinBtnText.innerText = "Join on roblox";
+            if (aboutMe !== undefined && aboutMe.innerText.indexOf("placeid") !== -1 && aboutMe.innerText.indexOf("jobid") !== -1) {
+              // Add the Join on Roblox button to the profile popup
+              var joinBtn = document.createElement("button");
+              joinBtn.className =
+                "applicationInstallButton-1co9qK button-f2h6uQ lookFilled-yCfaCM colorBrand-I6CyqQ sizeSmall-wU2dO- grow-2sR_-F";
+              joinBtn.id = "joinBtn";
 
-            joinBtn.appendChild(joinBtnText);
-            popupBody.appendChild(joinBtn);
-            popupBody.appendChild(joinBtn);
+              // Add the text inside of the button
+              var joinBtnText = document.createElement("span");
+              joinBtnText.className = "applicationInstallButtonText-34YwxG";
+              joinBtnText.id = "joinBtnText";
+              joinBtnText.innerText = "Join on roblox";
 
-            // When the button is clicked it will redirect you to the roblox website where it will launch the game using code injection.
-            joinBtn.onclick = function () {
-              // provide the placeid and jobid here. This will be retrieved from the web server
-              var placeid = "";
-              var jobid = "";
-              window.open(
-                "https://www.roblox.com/home?placeid=" +
-                  placeid +
-                  "&jobid=" +
-                  jobid,
-                "_blank"
-              );
-            };
+              joinBtn.appendChild(joinBtnText);
+              popupBody.appendChild(joinBtn);
+              popupBody.appendChild(joinBtn);
+
+              // When the button is clicked it will redirect you to the roblox website where it will launch the game using code injection.
+              joinBtn.onclick = function () {
+                // provide the placeid and jobid here. This will be retrieved from the web server
+                var placeid = aboutMe.innerText.split("jobid=")[0].slice(8);
+                var jobid = aboutMe.innerText.split("jobid=")[1];
+                window.open(
+                  "https://www.roblox.com/home?placeid=" +
+                    placeid +
+                    "&jobid=" +
+                    jobid,
+                  "_blank"
+                );
+              };
+            }
           }
         });
       });
