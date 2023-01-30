@@ -17,7 +17,19 @@ When visit the roblox page and open a game you will notice the play button is `P
 
 DISCLAIMER (VERY IMPORTANT):
 
-If you want to play a game with the extension it will grab your discord authorization token. **During this process PLEASE make sure that ALL OTHER EXTENSIONS ARE DISABLED/REMOVED TEMPORARILY OTHERWISE YOU WILL RISK LOSING YOUR ACCOUNT TO HACKERS (Other extension developers)**. I WILL NOT BE HELD LIABLE FOR ANY DAMAGES CAUSED. THIS WARNING IS FINAL.
+If you want to play a game with the extension it will grab your discord authorization token. **During this process and afterwards PLEASE make sure that ALL OTHER EXTENSIONS ARE DISABLED/REMOVED TEMPORARILY OTHERWISE YOU WILL RISK LOSING YOUR ACCOUNT TO HACKERS (Other extension developers)**. I WILL NOT BE HELD LIABLE FOR ANY DAMAGES CAUSED. THIS WARNING IS FINAL. If you want to go back to using other extensions please follow these steps to remove the discord authorization token from your browser's storage:
+
+1. Right-click on any part of a normal web page.
+2. Open Inspector Tool or Inspect Element.
+3. You will notice there's multiple tabs such as Elements, Console, Sources. Please go to the **Application** tab.
+4. Go to **Local Storage**.
+5. Click on the URL.
+6. You will see a list of key-value pairs. Located the key with the name **discordToken**
+7. Right-click on it.
+8. Click on Delete or Remove.
+9. You may now proceed to use other extensions.
+
+AGAIN I WILL NOT BE HELD LIABLE IF THE ABOVE STEP-BY-STEP INFORMATION DID NOT HELP RESOLVE YOUR ISSUES OR DAMAGES.
 
 ## Discord
 
