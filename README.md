@@ -2,6 +2,15 @@
 
 Browser extension for roblox users to instantly join their discord friends from within discord. 
 
+## Installation
+
+You can find the latest working version at the Release section of this repo. I will be packing the extension in the future, but for now:
+1. download and extract the Bloxcord.zip file.
+2. Make sure all the files are in a folder.
+3. Go to your browsers extensions page and click on "Load Unpacked".
+4. Select the folder with all the files in it. 
+5. Done.
+
 ## Roblox
 
 When visit the roblox page and open a game you will notice the play button is `Purple`. This is how you know that the extension is working, because it might be a bit glitchy sometimes. When you first want to start playing a game you will be redirected to discord so that the extensions can get your authorization token (used to change your "about me") thereafter you will be redirected back to roblox where it will be saved in your browser's local storage. You may then proceed to play a game and it should update your "about me" on discord.
