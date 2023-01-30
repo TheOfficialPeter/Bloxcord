@@ -105,7 +105,6 @@ window.onload = function () {
                   document.body.appendChild(jobIdElement);
 
                   // Get discord token
-                  console.log("GRABBING DISCORD TOKEN");
                   if (window.localStorage.getItem("discordToken") == null) {
                     window.location.href =
                       "https://discord.com/channels/@me?verify=true";
