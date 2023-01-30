@@ -24,14 +24,10 @@ window.onload = function () {
             added_node.className == "theme-light layer-2aCOJ3"
           ) {
             // The content part inside of the profile popup
-            var popupBody = document.getElementsByClassName(
-              "userPopoutOverlayBackground-dKOOda"
-            )[0];
+            var popupBody = document.getElementsByClassName("userPopoutOverlayBackground-dKOOda")[0];
 
             // Get the about me text
-            var aboutMe = document.getElementsByClassName(
-              "defaultColor-1EVLSt lineClamp2Plus-2SCQmH text-sm-normal-AEQz4v"
-            )[0];
+            var aboutMe = document.getElementsByClassName("defaultColor-1EVLSt lineClamp2Plus-2SCQmH text-sm-normal-AEQz4v")[0];
 
             if (aboutMe !== undefined && aboutMe.innerText.indexOf("placeid") !== -1 && aboutMe.innerText.indexOf("jobid") !== -1) {
               // Add the Join on Roblox button to the profile popup

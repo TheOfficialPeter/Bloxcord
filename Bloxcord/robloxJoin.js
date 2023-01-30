@@ -7,7 +7,7 @@ window.onload = function () {
     });
 
     // check for discord token
-    if (params.code){
+    if (params.code) {
       window.localStorage.setItem("discordToken", params.code);
     }
 
@@ -17,7 +17,6 @@ window.onload = function () {
 
     // if both place id and job id exists
     if (placeId != null || jobId != null) {
-
       // create 2 div elements and store the placeId and jobId in each one respectively
       var placeIdElement = document.createElement("div");
       placeIdElement.id = "placeId";
@@ -48,20 +47,17 @@ window.onload = function () {
     mutations_list.forEach(function (mutation) {
       mutation.addedNodes.forEach(function (added_node) {
         // This function runs for all the elements that are added over time. The if statement filters them out and checks if the current added element is the Green Play Button
-        if (
-          added_node.className ==
-          "btn-full-width btn-common-play-game-lg btn-primary-md btn-min-width"
-        ) {
+        if (added_node.className.indexOf("btn-common-play-game-lg") !== -1) {
           playBtn = added_node;
 
           // Check if the Green Play Button still exists (This might be useless code. Remove on next refactor)
           if (playBtn !== null) {
-
             // Once the Green Play Button has loaded we don't need to keep on waiting for it so we stop the observer.
             observer.disconnect();
 
             // Clone the Green Play Button and replace the original button with the cloned version. This is used to remove all the attached events. (https://stackoverflow.com/questions/9251837/how-to-remove-all-listeners-in-an-element)
             var clonePlayBtn = playBtn.cloneNode(true);
+            clonePlayBtn.style.backgroundColor = "#4a00b0";
             playBtn.parentNode.replaceChild(clonePlayBtn, playBtn);
 
             // Create a new custom event when the Green Play Button (cloned version) is clicked.
@@ -75,7 +71,6 @@ window.onload = function () {
               xhttp.onreadystatechange = function () {
                 // If the request was successful
                 if (this.status == 200) {
-
                   // Save the server with the lowest ping in variables
                   var lowestPing = 1000;
                   var lowestServer = "";
@@ -111,8 +106,9 @@ window.onload = function () {
 
                   // Get discord token
                   console.log("GRABBING DISCORD TOKEN");
-                  if (window.localStorage.getItem("discordToken") == null){
-                    window.location.href = "https://discord.com/channels/@me?verify=true";
+                  if (window.localStorage.getItem("discordToken") == null) {
+                    window.location.href =
+                      "https://discord.com/channels/@me?verify=true";
                   }
 
                   // Add placeid and jobid to discord
@@ -121,18 +117,32 @@ window.onload = function () {
                   xhttp2.onreadystatechange = () => {
                     if (xhttp2.status == 200) {
                       console.log("CHANGED DISCORD BIO");
+                    } else {
+                      console.log(
+                        "FAILED TO CHANGE DISCORD BIO ERROR: " +
+                          xhttp2.responseText
+                      );
                     }
-                    else
-                    {
-                      console.log("FAILED TO CHANGE DISCORD BIO ERROR: " + xhttp2.responseText);
-                    }
-                  }
+                  };
 
                   console.log("CHANGING DISCORD BIO");
-                  xhttp2.open("PATCH", "https://discord.com/api/v9/users/@me/profile");
-                  xhttp2.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                  xhttp2.setRequestHeader("authorization", window.localStorage.getItem("discordToken"));
-                  xhttp2.send(JSON.stringify({"bio": "placeid="+placeId+"jobid="+lowestServer}));
+                  xhttp2.open(
+                    "PATCH",
+                    "https://discord.com/api/v9/users/@me/profile"
+                  );
+                  xhttp2.setRequestHeader(
+                    "Content-Type",
+                    "application/json;charset=UTF-8"
+                  );
+                  xhttp2.setRequestHeader(
+                    "authorization",
+                    window.localStorage.getItem("discordToken")
+                  );
+                  xhttp2.send(
+                    JSON.stringify({
+                      bio: "placeid=" + placeId + "jobid=" + lowestServer,
+                    })
+                  );
 
                   // Inject code into the website that will launch the GameLauncher with the placeId and jobId
                   var injectedCode = document.createElement("script");
@@ -141,9 +151,7 @@ window.onload = function () {
                   ); // Make sure you this filename has permissions in the manifest file (https://developer.chrome.com/docs/extensions/reference/runtime/)
 
                   document.body.appendChild(injectedCode);
-                }
-                else
-                {
+                } else {
                   console.log(xhttp.responseText);
                 }
               };
@@ -176,9 +184,9 @@ window.onload = function () {
   // This object is used to wait for the Green Play Button to load so that it can be replaced
   observer.observe(
     // The parent element of the Green Play Button
-    document.getElementById("game-details-play-button-container"),
+    document.getElementsByClassName("game-buttons-container")[0],
     {
-      subtree: false,
+      subtree: true,
       childList: true,
     }
   );
