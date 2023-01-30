@@ -1,3 +1,27 @@
 # Bloxcord
 
-Browser extension for roblox users to instantly join their discord friends from within discord. More features after first release
+Browser extension for roblox users to instantly join their discord friends from within discord. 
+
+## Roblox
+
+When visit the roblox page and open a game you will notice the play button is `Purple`. This is how you know that the extension is working, because it might be a bit glitchy sometimes. When you first want to start playing a game you will be redirected to discord so that the extensions can get your authorization token (used to change your "about me") thereafter you will be redirected back to roblox where it will be saved in your browser's local storage. You may then proceed to play a game and it should update your "about me" on discord.
+
+DISCLAIMER (VERY IMPORTANT):
+
+If you want to play a game with the extension it will grab your discord authorization token. **During this process PLEASE make sure that ALL OTHER EXTENSIONS ARE DISABLED/REMOVED TEMPORARILY OTHERWISE YOU WILL RISK LOSING YOUR ACCOUNT TO HACKERS (Other extension developers)**. I WILL NOT BE HELD LIABLE FOR ANY DAMAGES CAUSED. THIS WARNING IS FINAL.
+
+## Discord
+
+When a discord user has the roblox game link in their "about me" which looks something like this:
+
+`placeid=0?jobid=0`
+
+A button should appear below in their profile page stating: "Join on Roblox". Click that button to join their server. If the button doesn't appear try closing and re-opening their profile. If the issue still persists, please make a gitub issue post.
+
+DISCLAIMER 2:
+
+This extensions DOES grab your discord authorization token to change your "about me" to the game that you are currently playing. If you do not wish for this extensions to use your token or change your "about me" then don't install it. The part(s) of the extensions where it grabs and uses your authorization token is/are:
+
+`./Bloxcord/main.js` lines 9 - 15<br/>
+`./Bloxcord/discordauth.js` lines 1 - 21<br/>
+`./Bloxcord/robloxJoin.js` lines 10 - 12 **;** lines 108 - 111 **;** lines 116 - 144<br/>
