@@ -17,7 +17,8 @@
   "permissions": [
     "<all_urls>",
     "webRequest",
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "background": {
     "scripts": ["discordauth.js"],

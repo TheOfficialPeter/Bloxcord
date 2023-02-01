@@ -7,10 +7,8 @@ window.onload = function () {
     });
 
     if (params.verify) {
-      console.log("SENDING MESSAGE TO BACKGROUND");
       chrome.runtime.sendMessage({ verify: "true" }, function (response) {
-        window.location.href =
-          "https://www.roblox.com/home?code=" + response.discordToken;
+        window.location.href = "https://www.roblox.com/home";
       });
     }
 

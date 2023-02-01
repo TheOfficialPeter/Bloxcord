@@ -6,11 +6,6 @@ window.onload = function () {
       get: (searchParams, prop) => searchParams.get(prop),
     });
 
-    // check for discord token
-    if (params.code) {
-      window.localStorage.setItem("discordToken", params.code);
-    }
-
     // Get place id and job id from the url (when being redirected from discord)
     var placeId = params.placeid;
     var jobId = params.jobid;
@@ -104,52 +99,53 @@ window.onload = function () {
                   document.body.appendChild(placeIdElement);
                   document.body.appendChild(jobIdElement);
 
-                  // Get discord token
-                  if (window.localStorage.getItem("discordToken") == null) {
-                    window.location.href =
-                      "https://discord.com/channels/@me?verify=true";
-                  }
+                  // Check for discord token
+                  chrome.runtime.sendMessage({ getToken: "true" }, function (response) {
+                      if (response.discordToken !== "") {
 
-                  // Add placeid and jobid to discord
-                  var xhttp2 = new XMLHttpRequest();
+                        // Add placeid and jobid to discord
+                        var xhttp2 = new XMLHttpRequest();
 
-                  xhttp2.onreadystatechange = () => {
-                    if (xhttp2.status == 200) {
-                      console.log("CHANGED DISCORD BIO");
-                    } else {
-                      console.log(
-                        "FAILED TO CHANGE DISCORD BIO ERROR: " +
-                          xhttp2.responseText
-                      );
+                        xhttp2.onreadystatechange = () => {
+                          if (xhttp2.status == 200) {
+                            console.log("CHANGED DISCORD BIO");
+                          } else {
+                            console.log(
+                              "FAILED TO CHANGE DISCORD BIO ERROR: " +
+                                xhttp2.responseText
+                            );
+                          }
+                        };
+
+                        xhttp2.open(
+                          "PATCH",
+                          "https://discord.com/api/v9/users/@me/profile"
+                        );
+                        xhttp2.setRequestHeader(
+                          "Content-Type",
+                          "application/json;charset=UTF-8"
+                        );
+                        xhttp2.setRequestHeader("Authorization", response.discordToken);
+                        xhttp2.send(
+                          JSON.stringify({
+                          bio: "placeid=" + placeId + "jobid=" + lowestServer,
+                          })
+                        );
+
+                        // Inject code into the website that will launch the GameLauncher with the placeId and jobId
+                        var injectedCode = document.createElement("script");
+                        injectedCode.src = chrome.runtime.getURL(
+                          "robloxJoinCommand.js"
+                        ); // Make sure you this filename has permissions in the manifest file (https://developer.chrome.com/docs/extensions/reference/runtime/)
+
+                        document.body.appendChild(injectedCode);
+                      }
+                      else
+                      {
+                        window.location.href = "https://discord.com/channels/@me?verify=true";
+                      }
                     }
-                  };
-
-                  console.log("CHANGING DISCORD BIO");
-                  xhttp2.open(
-                    "PATCH",
-                    "https://discord.com/api/v9/users/@me/profile"
                   );
-                  xhttp2.setRequestHeader(
-                    "Content-Type",
-                    "application/json;charset=UTF-8"
-                  );
-                  xhttp2.setRequestHeader(
-                    "authorization",
-                    window.localStorage.getItem("discordToken")
-                  );
-                  xhttp2.send(
-                    JSON.stringify({
-                      bio: "placeid=" + placeId + "jobid=" + lowestServer,
-                    })
-                  );
-
-                  // Inject code into the website that will launch the GameLauncher with the placeId and jobId
-                  var injectedCode = document.createElement("script");
-                  injectedCode.src = chrome.runtime.getURL(
-                    "robloxJoinCommand.js"
-                  ); // Make sure you this filename has permissions in the manifest file (https://developer.chrome.com/docs/extensions/reference/runtime/)
-
-                  document.body.appendChild(injectedCode);
                 } else {
                   console.log(xhttp.responseText);
                 }
