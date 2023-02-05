@@ -26,3 +26,5 @@ A button should appear below in their profile page stating: "Join on Roblox". Cl
 DISCLAIMER:
 
 This extensions DOES grab your discord authorization token to change your "about me" to the game that you are currently playing. At first I saved the token in browser's local storage which was way to unsafe so now it gets saved in the extension itself. This will not guarantee 100% safety against hackers. If you do not wish for this extensions to use your token or change your "about me" then don't install it. Also note that I WILL NOT BE HELD LIABLE FOR ANY DAMAGES.
+
+I also noticed a tweet from Discord the other day stating that the use of 3rd party plugins and extensions that inject code are against their TOS so keep that in mind when using it. I have been using this extension till now and everything is still the same. In my opinion your account should be fine. Discord will think that it is you changing your about me every now and then.
