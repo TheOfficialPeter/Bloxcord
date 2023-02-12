@@ -1,5 +1,7 @@
 # Bloxcord
 
+![image](https://user-images.githubusercontent.com/57006688/218325077-a96e8132-bc3f-49f0-acc1-30be4547bf18.png)
+
 Browser extension for roblox users to instantly join their discord friends from within discord. 
 
 ## Installation
